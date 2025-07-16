@@ -5,5 +5,5 @@ variable "ec2_type" {
 }
 variable "ec2_ami" {
   type = string
-  default = "ami-020cba7c55df1f615"
+  default = "ami-010876b9ddd38475e"
 }

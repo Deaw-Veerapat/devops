@@ -79,16 +79,19 @@ resource "aws_security_group" "sg1" {
   }
 }
 resource "aws_instance" "jenkin_ec2" {
-  ami = "ami-020cba7c55df1f615"
-  instance_type = "t2.micro"
+  ami = var.ec2_ami
+  instance_type = var.ec2_type
   subnet_id = aws_subnet.sub1.id
   key_name = aws_key_pair.jenkin_keypair.key_name
   vpc_security_group_ids = [aws_security_group.sg1.id]
-  associate_public_ip_address = true
+
 }
-output "private_key" {
-  value = tls_private_key.rsa-4096.private_key_pem
-  sensitive = true
+resource "local_file" "key" {
+  content  = tls_private_key.rsa-4096.private_key_pem
+  filename = "key.pem"
+}
+output "key_name" {
+  value = aws_instance.jenkin_ec2.key_name
 }
 output "public_ip" {
   value = aws_instance.jenkin_ec2.public_ip
